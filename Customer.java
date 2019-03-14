@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -27,7 +26,7 @@ public class Customer {
      */
     public synchronized void order(){
         // TODO Implement required functionality
-        this.num_orders = ThreadLocalRandom.current().nextInt(1, SushiBar.maxOrder +1);
+        this.num_orders = ThreadLocalRandom.current().nextInt(1, SushiBar.maxOrder);
         this.num_takeaway = ThreadLocalRandom.current().nextInt(1, SushiBar.maxOrder +1 - this.num_orders);
     }
 
@@ -39,6 +38,23 @@ public class Customer {
         // TODO Implement required functionality
         return this.customerID;
     }
+
+ 
+
+    /**
+     * @return the num_orders
+     */
+    public int getNum_orders() {
+        return num_orders;
+    }
+
+    /**
+     * @return the num_takeaway
+     */
+    public int getNum_takeaway() {
+        return num_takeaway;
+    }
+
 
     // Add more methods as you see fit
 }

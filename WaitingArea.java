@@ -15,8 +15,7 @@ public class WaitingArea {
      */
 
     public WaitingArea(int size) {
-        // TODO Implement required functionality
-        this.waiting_que = new ArrayList();
+        this.waiting_que = new ArrayList<Customer>();
         this.size = size;
 
     }
@@ -31,27 +30,34 @@ public class WaitingArea {
             try{
                 this.wait();
             }
-            catch (Exception e){
-                e.printStackTrace();;
+            catch (InterruptedException ie){
+                ie.printStackTrace();
                 //throw new InterruptedException();
             }
             
         }
         this.waiting_que.add(customer);
         this.notifyAll();
-        // TODO Implement required functionality
     }
 
+    public boolean queue_empty(){
+        if(waiting_que.isEmpty()){
+            return true;
+        }
+        return false;
+    }
     /**
      * @return The customer that is first in line.
      */
     public synchronized Customer next() {
-        if(this.waiting_que.isEmpty()){
+        while(this.waiting_que.isEmpty()){
             try{
+
+                System.out.println(Thread.currentThread().getName() + " is waiting");
                 this.wait();
             }
-            catch (Exception e){
-                e.printStackTrace();
+            catch (InterruptedException ie){
+                ie.printStackTrace();
             }
         }
         Customer customer = this.waiting_que.get(0);

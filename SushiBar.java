@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /*
 private static AtomicInteger at = new AtomicInteger(0);
@@ -41,6 +42,31 @@ public class SushiBar {
         takeawayOrders = new SynchronizedInteger(0);
 
         // TODO initialize the bar and start the different threads
+
+        Clock clock = new Clock(duration);
+
+        WaitingArea waitingArea = new WaitingArea(waitingAreaCapacity);
+
+        Door door = new Door(waitingArea);
+        (new Thread(door)).start();
+        ArrayList<Thread> threads = new ArrayList();
+        for(int i = 0; i<waitressCount; i++){
+            Waitress waitress = new Waitress(waitingArea);
+            Thread thread = new Thread(waitress);
+            thread.start();
+            threads.add(thread);
+        }
+        for(Thread t: threads){
+            try{
+                t.join();
+            }catch (InterruptedException ie) {}
+            
+        }
+        int totalOrders = servedOrders.get() + takeawayOrders.get();
+        SushiBar.write("Total orders: " + totalOrders);
+        SushiBar.write("Number of takeaway:" + takeawayOrders.get());
+        SushiBar.write("Number of served orders: " + servedOrders.get());
+
     }
 
     //Writes actions in the log file and console
